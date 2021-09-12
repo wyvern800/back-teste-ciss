@@ -47,7 +47,7 @@ public class FuncionarioService {
     /**
      * Atualiza o funcionário
      * @param funcionarioId O funcionário a ser atualizado
-     * @return {@code HttpStatus.OK} if character is updated | {@code HttpStatus.NOT_FOUND} if it isn't
+     * @return {@code HttpStatus.OK} se funcionario foi atualizado | {@code HttpStatus.NOT_FOUND} se não
      */
     public ResponseEntity<Funcionario> update(long funcionarioId, Funcionario reqBodyFuncionario) {
         Optional<Funcionario> optFuncionario = funcionarioRepository.findById(funcionarioId);
@@ -81,11 +81,11 @@ public class FuncionarioService {
     }
 
     /**
-     * Deletes the specified character
-     * @param charId The id of the character to be deleted
+     * Deleta o funcionario específico
+     * @param funcionarioId O id do funcionario a ser deletado
      */
-    public ResponseEntity<Funcionario> delete(long charId) {
-        Optional<Funcionario> optFuncionario = funcionarioRepository.findById(charId);
+    public ResponseEntity<Funcionario> delete(long funcionarioId) {
+        Optional<Funcionario> optFuncionario = funcionarioRepository.findById(funcionarioId);
         if(optFuncionario.isPresent()){
             funcionarioRepository.delete(optFuncionario.get());
             log.info("Funcionário "+optFuncionario.get().getNome()+" foi removido com sucesso!");
@@ -94,5 +94,15 @@ public class FuncionarioService {
             log.warn("Funcionário não encontrado!");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    /**
+     * Retorna o funcionario com o id apresentado
+     * @param id Id do funcionario
+     * @return  {@code HttpStatus.OK} se o funcionario foi encontrado | {@code HttpStatus.NOT_FOUND} se não foi
+     */
+    public ResponseEntity<Funcionario> getFuncionarioById(long id) {
+        Optional<Funcionario> optFuncionario = funcionarioRepository.findById(id);
+        return optFuncionario.map(funcionario -> new ResponseEntity<>(funcionario, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

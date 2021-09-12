@@ -7,10 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:8081/api"})
+
 @RestController
+@CrossOrigin(origins = "*")
 public class FuncionarioController {
 
     @Autowired
@@ -52,7 +54,7 @@ public class FuncionarioController {
      * @param id O id do funcionaro à ser deletado
      * @return A resposta | {@code HttpStatus.OK} se funcionário existe, {@code HttpStatus.NOT_FOUND} se não existe
      */
-    @RequestMapping(value = "/characters/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/funcionarios/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Funcionario> delete(@PathVariable(value = "id") long id) {
         return funcionarioService.delete(id);
     }
