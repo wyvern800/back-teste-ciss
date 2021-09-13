@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.xml.ws.Response;
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -29,6 +30,17 @@ public class FuncionarioController {
     }
 
     /**
+     * Representa o mapeamento de {@code GET}
+     * @param id O id a ser editado
+     * @return A resposta | {@code HttpStatus.OK} se o funcionário existe, {@code HttpStatus.NOT_FOUND} se não existe
+     */
+    @GetMapping()
+    @RequestMapping(method =  RequestMethod.GET, path = "/funcionarios/{id}")
+    public ResponseEntity<Funcionario> getFunc(@PathVariable(value = "id") String id) {
+        return funcionarioService.getFuncionarioById(id);
+    }
+
+    /**
      * Representa o mapeamento de {@code POST}
      * @return O funcionário que foi adicionado
      */
@@ -44,8 +56,8 @@ public class FuncionarioController {
      * @return A resposta | {@code HttpStatus.OK} se o funcionário existe, {@code HttpStatus.NOT_FOUND} se não existe
      */
     @RequestMapping(value = "/funcionarios/{id}", method =  RequestMethod.PUT)
-    public ResponseEntity<Funcionario> put(@PathVariable(value = "id") long id, @RequestBody Funcionario novoFuncionario) {
-        return funcionarioService.update(id, novoFuncionario);
+    public ResponseEntity<Funcionario> put(@PathVariable(value = "id") String id, @RequestBody Funcionario funcionarioEditado) {
+        return funcionarioService.update(id, funcionarioEditado);
     }
 
 
@@ -55,7 +67,7 @@ public class FuncionarioController {
      * @return A resposta | {@code HttpStatus.OK} se funcionário existe, {@code HttpStatus.NOT_FOUND} se não existe
      */
     @RequestMapping(value = "/funcionarios/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Funcionario> delete(@PathVariable(value = "id") long id) {
+    public ResponseEntity<Funcionario> delete(@PathVariable(value = "id") String id) {
         return funcionarioService.delete(id);
     }
 }

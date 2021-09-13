@@ -7,11 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.example.demo.repository.FuncionarioRepository;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -46,11 +44,11 @@ public class FuncionarioService {
 
     /**
      * Atualiza o funcionário
-     * @param funcionarioId O funcionário a ser atualizado
+     * @param id O funcionário a ser atualizado
      * @return {@code HttpStatus.OK} se funcionario foi atualizado | {@code HttpStatus.NOT_FOUND} se não
      */
-    public ResponseEntity<Funcionario> update(long funcionarioId, Funcionario reqBodyFuncionario) {
-        Optional<Funcionario> optFuncionario = funcionarioRepository.findById(funcionarioId);
+    public ResponseEntity<Funcionario> update(String id, Funcionario reqBodyFuncionario) {
+        Optional<Funcionario> optFuncionario = funcionarioRepository.findById(id);
 
         if (optFuncionario.isPresent()) {
             Funcionario funcionarioAntigo = optFuncionario.get();
@@ -82,10 +80,10 @@ public class FuncionarioService {
 
     /**
      * Deleta o funcionario específico
-     * @param funcionarioId O id do funcionario a ser deletado
+     * @param id O id do funcionario a ser deletado
      */
-    public ResponseEntity<Funcionario> delete(long funcionarioId) {
-        Optional<Funcionario> optFuncionario = funcionarioRepository.findById(funcionarioId);
+    public ResponseEntity<Funcionario> delete(String id) {
+        Optional<Funcionario> optFuncionario = funcionarioRepository.findById(id);
         if(optFuncionario.isPresent()){
             funcionarioRepository.delete(optFuncionario.get());
             log.info("Funcionário "+optFuncionario.get().getNome()+" foi removido com sucesso!");
@@ -101,7 +99,7 @@ public class FuncionarioService {
      * @param id Id do funcionario
      * @return  {@code HttpStatus.OK} se o funcionario foi encontrado | {@code HttpStatus.NOT_FOUND} se não foi
      */
-    public ResponseEntity<Funcionario> getFuncionarioById(long id) {
+    public ResponseEntity<Funcionario> getFuncionarioById(String id) {
         Optional<Funcionario> optFuncionario = funcionarioRepository.findById(id);
         return optFuncionario.map(funcionario -> new ResponseEntity<>(funcionario, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
